@@ -56,6 +56,13 @@ public class VoucherService {
             return RedeemResponse.fail("Campaign out of stock");
         }
 
+        long redeemedByUser = redemptionRepository.countByCampaignIdAndUserId(
+                campaign.getId(), userId);
+        if (redeemedByUser >= campaign.getPerUserLimit()) {
+            audit("FAILED", "User redemption limit reached", campaign, voucher, userId);
+            return RedeemResponse.fail("User redemption limit reached");
+        }
+
         voucher.setStatus("REDEEMED");
         voucher.setRedeemedBy(userId);
         voucher.setRedeemedAt(new Date());
@@ -68,13 +75,18 @@ public class VoucherService {
                 voucher.getId(), campaign.getId(), userId, new Date());
         redemptionRepository.save(redemption);
 
+        audit("OK", "", campaign, voucher, userId);
+
+        return RedeemResponse.ok(voucher.getCode(), campaign.getRemainingStock());
+    }
+
+    private void audit(String result, String message, Campaign campaign, Voucher voucher, String userId) {
         try {
-            auditClient.recordRedemption(campaign.getClientCode(), voucher.getCode(), userId);
+            auditClient.recordRedemption(
+                    campaign.getClientCode(), voucher.getCode(), userId, result, message);
         } catch (Exception e) {
             log.error("audit call failed");
         }
-
-        return RedeemResponse.ok(voucher.getCode(), campaign.getRemainingStock());
     }
 
     public RedeemResponse voidVoucher(String code) {
