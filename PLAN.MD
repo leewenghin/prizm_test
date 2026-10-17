@@ -50,7 +50,6 @@ In `VoucherService.redeem`, after the existing checks (voucher present, status n
 | `service/AuditClient.java` | Include `result` and `message` in the posted event. |
 | `service/VoucherService.java` | Limit check before writes. Audit that rejection and the existing success. |
 | `src/test/java/com/prizm/campaign/VoucherServiceTest.java` | A new user can redeem twice on campaign 1; the third is `FAILED` with `User redemption limit reached`. Do not reuse `RAYA-0001` / `user-1` (already consumed by `redeemActiveVoucherSucceeds` on the shared Spring context). `user-99` redeeming another campaign 1 code is already at the limit. |
-| `README.md` | Note that each campaign allows 2 redemptions per user and void history counts. |
 
 Not changed: both controllers, `RedeemResponse`, `CampaignStats`, `CampaignStatsService`, `Voucher`, `Redemption`, `VoucherRepository`, `CampaignRepository`, `build.gradle`.
 
