@@ -18,11 +18,14 @@ public class AuditClient {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    public void recordRedemption(String clientCode, String voucherCode, String userId) {
+    public void recordRedemption(String clientCode, String voucherCode, String userId,
+                                  String result, String message) {
         Map<String, String> payload = new HashMap<>();
         payload.put("clientCode", clientCode);
         payload.put("voucherCode", voucherCode);
         payload.put("userId", userId);
+        payload.put("result", result);
+        payload.put("message", message);
         payload.put("apiKey", API_KEY);
 
         restTemplate.postForObject(AUDIT_URL, payload, String.class);
