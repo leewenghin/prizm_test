@@ -8,6 +8,7 @@ CREATE TABLE campaign (
     client_code     VARCHAR(50)  NOT NULL,
     total_stock     INT          NOT NULL,
     remaining_stock INT          NOT NULL,
+    per_user_limit  INT          NOT NULL DEFAULT 2,
     active          BOOLEAN      NOT NULL DEFAULT TRUE
 );
 

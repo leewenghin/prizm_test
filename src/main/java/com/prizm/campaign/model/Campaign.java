@@ -20,6 +20,9 @@ public class Campaign {
     @Column(name = "remaining_stock")
     private int remainingStock;
 
+    @Column(name = "per_user_limit")
+    private int perUserLimit;
+
     private boolean active;
 
     public Long getId() { return id; }
@@ -32,6 +35,8 @@ public class Campaign {
     public void setTotalStock(int totalStock) { this.totalStock = totalStock; }
     public int getRemainingStock() { return remainingStock; }
     public void setRemainingStock(int remainingStock) { this.remainingStock = remainingStock; }
+    public int getPerUserLimit() { return perUserLimit; }
+    public void setPerUserLimit(int perUserLimit) { this.perUserLimit = perUserLimit; }
     public boolean isActive() { return active; }
     public void setActive(boolean active) { this.active = active; }
 }
